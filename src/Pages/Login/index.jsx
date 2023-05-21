@@ -22,8 +22,8 @@ export const Login = () =>{
     const fazerLogin = async() =>{
 
         const data ={
-            usuario:'gustavo',
-            senha:'abcd1234'
+            usuario:nome,
+            senha:senha
         }
 
         try{
