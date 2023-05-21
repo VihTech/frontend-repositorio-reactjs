@@ -28,6 +28,7 @@ export const Login = () =>{
 
         try{
             const res = await api.post('/login', data)
+            console.log(data)
             setarIdUsuario(res.data.id)
             setarNomeUsuario(res.data.usuario)
             loginToken(res.data.token)

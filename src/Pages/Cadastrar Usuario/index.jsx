@@ -2,12 +2,15 @@ import Header from "../../Components/Header"
 import {BsTrash3} from 'react-icons/bs'
 import {FaEyeSlash, FaEye, FaUserAlt, FaUserCircle} from 'react-icons/fa'
 import './style.css'
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { api } from "../../Services/API"
 
 export const CadastrarUsuario = () => {
 
     const [verSenha, setVerSenha] = useState(false)
     const [verConfirmaSenha, setVerConfirmaSenha] = useState(false)
+    const [carregando, setCarregando] = useState(false)
+    const [usuariosCadastrados, setUsuariosCadastrados] = useState('')
 
     const mostraConfirmaSenha = () => {
         if(verConfirmaSenha === false){
@@ -25,6 +28,22 @@ export const CadastrarUsuario = () => {
         }
     }
 
+    const pegarUsuarios = async () => {
+
+        try{
+            const res = await api.get("/mostrar_usuarios")
+            setCarregando(true)
+            setUsuariosCadastrados(res.data)
+        }catch(erro){
+            console.log(erro)
+        }
+
+    }
+
+    useEffect(() => {
+        pegarUsuarios()
+    }, [usuariosCadastrados])
+
     return(
         <div>
             <Header/>
@@ -35,21 +54,19 @@ export const CadastrarUsuario = () => {
                             <h2>Usuários Cadastrados</h2>
                         </div>
                         <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados">
-                            <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao">
-                                <p>Vitória</p>
-                                <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao-img"><BsTrash3/></div>
-                            </div>
 
-                            <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao">
-                                <p>Anderson</p>
-                                <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao-img"><BsTrash3/></div>
-                            </div>
-
-                            <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao">
-                                <p>Sérgio</p>
-                                <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao-img"><BsTrash3/></div>
-                            </div>
-
+                            {carregando === true?(
+                                <>
+                                    {usuariosCadastrados.map((itens, index) => (
+                                        <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao" key={index}>
+                                            <p>{itens.usuario}</p>
+                                            <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao-img"><BsTrash3/></div>
+                                        </div>
+                                    ))}
+                                </>
+                            ):(
+                                <p>Carregando...</p>
+                            )}
 
                         </div>
                     </div>
