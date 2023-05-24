@@ -136,7 +136,7 @@
 .main-cadastrar-obras-formulario-resumo-divisao > textarea{
     max-width: 94%;
     min-width: 94%;
-    height: 60%;
+    min-height: 25vh;
     margin: 1% 0 2% 0;
     text-orientation: initial;
     font-weight: bold;
@@ -187,7 +187,7 @@
 .main-cadastrar-obras-formulario-descricao-divisao > textarea{
     max-width: 94%;
     min-width: 94%;
-    height: 75%;
+    min-height: 25vh;
     margin: 1% 0 2% 0;
     text-orientation: initial;
     font-weight: bold;
