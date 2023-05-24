@@ -11,6 +11,31 @@ export const CadastrarUsuario = () => {
     const [verConfirmaSenha, setVerConfirmaSenha] = useState(false)
     const [carregando, setCarregando] = useState(false)
     const [usuariosCadastrados, setUsuariosCadastrados] = useState('')
+    const [usuario, setUsuario] = useState('')
+    const [tipo_de_usuario, setTipo_de_usuario] = useState('admin')
+    const [senha, setSenha] = useState('')
+    const [confirmsenha, setConfirmsenha] = useState('')
+
+    const cadastrarUsuarios = async () => {
+        const data = {
+            usuario,
+            tipo_de_usuario,
+            senha,
+            confirmsenha
+        }
+
+        try{
+            const res = await api.post('/cadastro_usuario', data)
+            setUsuario('')
+            setSenha('')
+            setConfirmsenha('')
+            console.log(res.data)
+        }catch(err){
+            console.log(err)
+        }
+    
+
+    }
 
     const mostraConfirmaSenha = () => {
         if(verConfirmaSenha === false){
@@ -40,6 +65,15 @@ export const CadastrarUsuario = () => {
 
     }
 
+    const excluirUsuarios = async (id) => {
+        try{
+            const res = await api.delete('/excluir_usuario/' + id)
+            console.log(res.data)
+        }catch(err){
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         pegarUsuarios()
     }, [usuariosCadastrados])
@@ -60,7 +94,7 @@ export const CadastrarUsuario = () => {
                                     {usuariosCadastrados.map((itens, index) => (
                                         <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao" key={index}>
                                             <p>{itens.usuario}</p>
-                                            <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao-img"><BsTrash3/></div>
+                                            <div className="main-cadastrar-usuario-conteiner-usuarios-cadastrados-divisao-img" onClick={() => {excluirUsuarios(itens._id)}}><BsTrash3/></div>
                                         </div>
                                     ))}
                                 </>
@@ -86,7 +120,7 @@ export const CadastrarUsuario = () => {
                                 <div className="main-cadastrar-usuario-conteiner-formulario-formulario-input-img">
                                     <FaUserAlt/>
                                 </div>
-                                    <input type="text"/>
+                                    <input type="text" value= {usuario}onChange={(e) => setUsuario(e.target.value)}/>
 
                                 
                             </div>
@@ -100,14 +134,14 @@ export const CadastrarUsuario = () => {
                                         <div className="main-cadastrar-usuario-conteiner-formulario-formulario-input-img" onClick={mostrarSenha}>
                                             <FaEyeSlash/>
                                         </div>
-                                        <input type="password"/>
+                                        <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)}/>
                                     </>
                                     ):(
                                         <>
                                             <div className="main-cadastrar-usuario-conteiner-formulario-formulario-input-img" onClick={mostrarSenha}>
                                                 <FaEye/>
                                             </div>
-                                            <input type="text"/>
+                                            <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)}/>
                                         </>
                                     )}
                                     
@@ -122,21 +156,21 @@ export const CadastrarUsuario = () => {
                                         <div className="main-cadastrar-usuario-conteiner-formulario-formulario-input-img" onClick={mostraConfirmaSenha}>
                                             <FaEyeSlash/>
                                         </div>
-                                        <input type="password"/>
+                                        <input type="password" value={confirmsenha} onChange={(e) => setConfirmsenha(e.target.value)}/>
                                     </>
                                     ):(
                                         <>
                                             <div className="main-cadastrar-usuario-conteiner-formulario-formulario-input-img" onClick={mostraConfirmaSenha}>
                                                 <FaEye/>
                                             </div>
-                                            <input type="text"/>
+                                            <input type="text" value={confirmsenha} onChange={(e) => setConfirmsenha(e.target.value)}/>
                                         </>
                                         )}
                             </div>
                         </div>
 
                         <div className="main-cadastrar-usuario-conteiner-formulario-btn">
-                            <button>Cadastrar</button>
+                            <button onClick={cadastrarUsuarios}>Cadastrar</button>
                         </div>
 
 
